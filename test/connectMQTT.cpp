@@ -14,8 +14,8 @@ int getHumidity();
 #define INTERVAL 900 // 这是检测间隔，单位为秒
 
 // WiFi初始化
-const char *ssid = "301";
-const char *password = "zhou20110625"; // 密码
+const char *ssid = "pythagodzilla";
+const char *password = "zzxzzxzzx"; // 密码
 
 // MQTT Broker的相关设置
 const char *mqtt_broker = "pythagodzilla.pw";
