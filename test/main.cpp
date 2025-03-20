@@ -15,8 +15,8 @@
 #define INTERVAL 900 // 这是检测间隔，单位为秒
 
 // 选择使用的模块，0是不使用，1是使用
-#define USE_ESP8266 1
-#define USE_ESP32 0
+#define USE_ESP8266 0
+#define USE_ESP32 1
 
 // AP模式设置
 const char *AP_NAME = "pythagodzilla";
@@ -82,7 +82,7 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 
 // 声明函数
-short isFirstBoot(); // 我觉得这个函数的命名很不优雅，它返回的相当于一个状态码。但是我不想改了。
+//short isFirstBoot(); // 我觉得这个函数的命名很不优雅，它返回的相当于一个状态码。但是我不想改了。
 void callback(char *topic, byte *payload, unsigned int length);
 int getHumidity(); // 最重要也是最水的一个函数。
 void connectWiFi(String ssidInput, String passwordInput);
@@ -154,7 +154,7 @@ void loop()
 
     //server.handleClient(); // 处理HTTP请求
 }
-
+/*
 short isFirstBoot()
 { // 这个函数用来判断是否是第一次启动，并且返回0，1，或者3来判断状态。
     String configureData;
@@ -182,7 +182,11 @@ short isFirstBoot()
             Serial.println(configureData);
         }
 
-        /*if ( metaConfigureData ){
+
+
+
+        /*
+        if ( metaConfigureData ){
             while ( metaConfigureData.available() ){
                 configureData += metaConfigureData.read();
             }
@@ -192,7 +196,10 @@ short isFirstBoot()
             Serial.println("Configure File Open FAILED! ");
 
             metaConfigureData.close();
-        }*/
+        }
+
+
+
     }
     else
     {
@@ -221,6 +228,7 @@ short isFirstBoot()
 
     cJSON_Delete(cJSONData);
 }
+*/
 
 // 回调函数
 void callback(char *topic, byte *payload, unsigned int length)

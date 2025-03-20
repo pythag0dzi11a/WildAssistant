@@ -1,3 +1,14 @@
 {
+    "WiFi" : {
+        "SSID" : "SSID",
+        "PASSWORD" : "PASSWORD"
+    },
+
+    "MQTT" : {
+        "BROKER" : "pythagodzilla.pw",
+        "PORT" : 1883,
+        "TOPIC" : "liuLake/SoilHumiditySensor"
+    },
+
     "FIRSTBOOT" : true
 }
