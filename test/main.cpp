@@ -69,15 +69,17 @@ bool isConfigured = false;
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WebServer.h>
+ESP8266WebServer server(80);
 #endif
 
 #if USE_ESP32
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <WebServer.h>
+WebServer server(80);
 #endif
 
-ESP8266WebServer server(80);
+
 WiFiClient espClient;
 PubSubClient client(espClient);
 
@@ -104,7 +106,7 @@ void setup()
 
     Serial.begin(115200);
 
-    switch (isFirstBoot())
+    switch (WildAssistant_isFirstBoot())
     {
     case 0:
         break;
