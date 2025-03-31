@@ -5,7 +5,7 @@
 #include <WildAssistant.h>
 
 // 测试时使用的参数
-// #define FIRSTBOOT 1 // 未来用LITTLEFS存储，也许ArduinoJSON
+// #define FIRSTBOOT 1 // 未来用LITTLEFS存储，也许ArduinoJSONhttps://download-cdn.jetbrains.com.cn/webstorm/WebStorm-2024.3.5.exe
 /**已使用文件存储**/
 
 // 引脚定义
@@ -142,108 +142,38 @@ void setup()
 void loop()
 {
     static long pastTime = 0;
-    int humidity = 0;
-    char strHumidity[16];
+    //int humidity = 0;
+    //char strHumidity[16];
+    String finalData, humidityData;
+
+    if((millis() - pastTime) / 10 > INTERVAL)
+    {
+        cJSON *seed = cJSON_CreateObject();
+
+        humidityData = String(getHumidity());
+
+        cJSON *item = cJSON_CreateString(humidityData.c_str());
+        cJSON_AddItemToObject(seed, "Humidity", item);
+        finalData = cJSON_Print(seed);
+
+        client.publish(topic, finalData.c_str());
+
+        pastTime = millis();
+
+        cJSON_Delete(seed); // 释放内存
+    }
+
 
     // 每隔INTERVAL秒获取一次土壤湿度
-    if ((millis() - pastTime) / 10 > INTERVAL)
+    /*if ((millis() - pastTime) / 10 > INTERVAL)
     {
         humidity = getHumidity();
         sprintf(strHumidity, "\"Humidity\" : %d", humidity);
         client.publish(topic, strHumidity);
         pastTime = millis();
-    }
+    }*/
 
     //server.handleClient(); // 处理HTTP请求
-}
-/*
-short isFirstBoot()
-{ // 这个函数用来判断是否是第一次启动，并且返回0，1，或者3来判断状态。
-    String configureData;
-    LittleFS.begin();
-
-    // 读取configure.json内容，并保存到configureData中。
-    if (LittleFS.exists("/configure.json"))
-    {
-        File metaConfigureData = LittleFS.open("/configure.json", "r");
-
-        if (!metaConfigureData)
-        {
-            Serial.println("Failed To Open Configure File! ");
-            return 3;
-        }
-        else
-        {
-            while (metaConfigureData.available())
-            {
-                configureData += (char)metaConfigureData.read();
-            }
-
-            metaConfigureData.close(); // 关闭文件
-
-            Serial.println(configureData);
-        }
-
-
-
-
-        /*
-        if ( metaConfigureData ){
-            while ( metaConfigureData.available() ){
-                configureData += metaConfigureData.read();
-            }
-
-            metaConfigureData.close();
-        }else{
-            Serial.println("Configure File Open FAILED! ");
-
-            metaConfigureData.close();
-        }
-
-
-
-    }
-    else
-    {
-        Serial.println("Configure File Doesn't EXISTS! ");
-    }
-    //
-
-    // 使用cJSON解析configureData内容，并匹配FIRST_BOOT的值。
-    cJSON *cJSONData = cJSON_Parse(configureData.c_str());
-    if (cJSONData == NULL)
-    {
-        Serial.println("Configure File Parse FAILED! ");
-        return 3;
-    }
-
-    cJSON *FIRSTBOOT = cJSON_GetObjectItem(cJSONData, "FIRSTBOOT");
-    if (cJSON_IsBool(FIRSTBOOT))
-    {
-        return FIRSTBOOT->valueint;
-    }
-    else
-    {
-        Serial.println("Configure File ERROR! Recreating configure File! ");
-        return 3;
-    }
-
-    cJSON_Delete(cJSONData);
-}
-*/
-
-// 回调函数
-void callback(char *topic, byte *payload, unsigned int length)
-{
-    Serial.print("Message arrived in topic: ");
-    Serial.println(topic);
-
-    Serial.print("Message:");
-    for (unsigned int i = 0; i < length; i++)
-    {
-        Serial.print((char)payload[i]);
-    }
-    Serial.println();
 }
 
 // 这个函数用来获取土壤湿度
@@ -258,6 +188,20 @@ int getHumidity()
     digitalWrite(ENABLE_SENSOR, LOW);
 
     return humidity;
+}
+
+// 回调函数
+void callback(char *topic, byte *payload, unsigned int length)
+{
+    Serial.print("Message arrived in topic: ");
+    Serial.println(topic);
+
+    Serial.print("Message:");
+    for (unsigned int i = 0; i < length; i++)
+    {
+        Serial.print((char)payload[i]);
+    }
+    Serial.println();
 }
 
 // 顾名思义，连接WiFi
