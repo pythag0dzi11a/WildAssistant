@@ -1,0 +1,14 @@
+{
+    "name": "WildAssistant",
+    "version": "1.0.0",
+    "description": "Core logic library for the WildAssistant project.",
+    "keywords": "sensor, mqtt, wild, assistant",
+    "authors": [
+        {
+            "name": "pythagodzilla",
+            "email": "planetarydefensecouncil@outlook.com"
+        }
+    ],
+    "frameworks": "arduino",
+    "platforms": "espressif32"
+}
