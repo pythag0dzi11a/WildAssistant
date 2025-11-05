@@ -3,7 +3,7 @@
 #include <WebServer.h>
 #include <WiFi.h>
 
-// #include "cJSON.h"
+#include "cJSON.h"
 #include "firstboot.h"
 #include "nlohmann/json.hpp"
 #include "platform.h"
@@ -129,14 +129,6 @@ void firstBoot(String AP_NAME, String AP_PASS) {
 
     replaceJSON(configuration_file_parse.dump().c_str(), "/configure.json");
 
-    // cJSON *root = cJSON_Parse(configuration.c_str());
-    // cJSON *FIRSTBOOT = cJSON_GetObjectItem(root, "FIRSTBOOT");
-
-    // cJSON_SetBoolValue(FIRSTBOOT, false);
-
-    // String ModifiedData = cJSON_Print(root);
-
-    // replaceJSON(ModifiedData.c_str(), "/configure.json");
   } else {
     server.send(200, "text/html",
                 "<h1>Failed to connect to WiFi</h1><p>Please try again.</p>");
@@ -200,4 +192,24 @@ short isFirstBoot() {
   }
 
   cJSON_Delete(cJSONData);
+}
+
+String read_configuration() {
+  LittleFS.begin();
+
+  if (LittleFS.exists("/configure.json")) {
+    File configuration_file_content = LittleFS.open("/configure.json", "r");
+
+    String configuration_string;
+
+    while (configuration_file_content.available()) {
+      configuration_string += (char)configuration_file_content.read();
+    }
+
+    configuration_file_content.close();
+
+    return configuration_string;
+  } else {
+    return "";
+  }
 }
