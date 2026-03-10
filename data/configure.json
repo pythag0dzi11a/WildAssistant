@@ -1,14 +1,29 @@
 {
-    "WiFi" : {
-        "SSID" : "SSID",
-        "PASSWORD" : "PASSWORD"
+  "Connection": {
+    "MQTT": {
+      "Broker": "",
+      "Port": 1883
     },
-
-    "MQTT" : {
-        "BROKER" : "pythagodzilla.pw",
-        "PORT" : 1883,
-        "TOPIC" : "liuLake/SoilHumiditySensor"
-    },
-
-    "FIRSTBOOT" : true
+    "WiFi": {
+      "SSID": "",
+      "Password": ""
+    }
+  },
+  "Device": {
+    "Type": "SoilMoistureSensor",
+    "ID": "001",
+    "Interface": "",
+    "Config": {
+      "Pin": [
+        {
+          "Mode": "AnalogRead",
+          "PinNumber": 34
+        },
+        {
+          "Mode": "DigitalRead",
+          "PinNumber": 12
+        }
+      ]
+    }
+  }
 }
